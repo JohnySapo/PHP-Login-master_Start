@@ -1,20 +1,48 @@
+<!-- 
+-- Student Name: Johny Ramos
+-- Course: T054 - Computer System Management
+-- Module: Web Application
+-- Lecturer: Robert Smith
+-->
+
 <?php 
-    require_once ('config.php'); //Importing config file
+    require_once("../src/DBconnect.php");    
+    require("../src/cleaner.php");
+
     session_start(); 
-?>
-<?php 
+    $cleaner = new cleaner();
+
     if(isset($_POST['Submit'])) {
-        if (($_POST['Username'] == $Username) && ($_POST['Password'] == $Password)) {
+
+        $cleanUserName = $cleaner -> cleanData($_POST['Username']);
+        $cleanPassword = $cleaner -> cleanData($_POST['Password']);
+
+        try {
             
-            $_SESSION['Username'] = $Username; //Store the user to the session.
-            $_SESSION['Active'] = true;
+            $sql = "SELECT * FROM registration WHERE email = :email AND password = :password";
 
-            //redirect to index page after login
-            header("location:index.php");
-            exit; 
+            $statement = $connection -> prepare($sql);
+            $statement -> bindParam(':email', $cleanUserName, PDO::PARAM_STR);
+            $statement -> bindParam(':password', $cleanPassword, PDO::PARAM_STR);
+            $statement -> execute();
 
-        } else {
-            echo 'Incorrect Username or Password';
+            if($statement -> rowCount() > 0) {
+                
+                $result = $statement -> fetch(PDO::FETCH_ASSOC);
+
+                $firstname = $result["firstname"];
+                $lastname  = $result["lastname"];
+                $age = $result["age"];
+
+                $_SESSION['fullName'] = "$firstname $lastname";
+
+                header("location:index.php");
+                exit;
+            } else {
+                echo "Invalid email or password. Please try again.";
+            }
+        } catch (PDOException $pdoex) {
+            die("Error: ". $pdoex -> getMessage());
         }
     }
 ?>

@@ -1,22 +1,23 @@
+<!-- 
+-- Student Name: Johny Ramos
+-- Course: T054 - Computer System Management
+-- Module: Web Application
+-- Lecturer: Robert Smith
+-->
+
 <?php require_once '../template/header.php';?>
 <title>Home page</title>
 </head>
 <body>
     <div class="container">
       <div class="header clearfix">
-        <nav>
-          <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">About</a></li>
-            <li><a href="contacts.php">Contact</a></li>
-          </ul>
-        </nav>
+          <?php require_once("../template/navbar.php") ?>
         <h3 class="text-muted">PHP Login exercise - Home page</h3>
       </div>
 
         <div class="mainarea">
             <h1>
-              Status: You are logged in  <?php echo $_SESSION['Username']; ?>
+              Status: You are logged in  <?php echo $_SESSION['fullName']; ?>
             </h1>
             <p class="lead">This is where we will put the logout button</p>
 

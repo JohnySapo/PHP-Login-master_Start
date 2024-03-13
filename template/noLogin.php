@@ -7,12 +7,11 @@
 
 <?php 
     session_start(); 
-    // if ($_SESSION['Active'] == false) {
-    //     header("location:login.php"); // redict to login page is login is invalid.
-    //     exit;
-    // }
 
-
+    if ($_SESSION['Active'] == false) {
+        header("location:login.php"); // redict to login page is login is invalid.
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
